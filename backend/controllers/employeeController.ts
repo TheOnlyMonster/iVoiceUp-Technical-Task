@@ -44,3 +44,17 @@ export const getEmployeeById = async (req: Request, res: Response, next: NextFun
     next(error);
   }
 };
+
+
+export const viewEmployees = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    const { page = 1 } = req.query;
+
+    const employees = await EmployeeService.viewEmployees(Number(page));
+
+    res.status(200).json({ employees });
+
+  } catch (error) {
+    next(error);
+  }
+}

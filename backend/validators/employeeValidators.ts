@@ -46,3 +46,9 @@ export const getEmployeeValidator: ValidationChain[] = [
   query('id')
     .exists().withMessage('Employee ID is required.'),
 ];
+
+export const viewEmployeesValidator: ValidationChain[] = [
+  query('page')
+    .optional()
+    .isNumeric().withMessage('Page must be a number.'),
+];
