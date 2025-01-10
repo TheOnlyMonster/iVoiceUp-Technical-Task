@@ -55,10 +55,6 @@ export class EmployeeService {
     return employee;
   }
 
-  static async viewEmployee(id: string): Promise<IEmployee> {
-    const employee = await this.getEmployeeById(id);
-    return employee;
-  }
 
   static async viewEmployees(page = 1, limit = 10): Promise<IEmployee[]> {
     const employees = await Employee.find()

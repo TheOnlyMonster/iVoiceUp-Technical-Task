@@ -41,3 +41,8 @@ export const editEmployeeValidator: ValidationChain[] = [
     .optional()
     .isNumeric().withMessage('Salary must be a number.'),
 ];
+
+export const getEmployeeValidator: ValidationChain[] = [
+  query('id')
+    .exists().withMessage('Employee ID is required.'),
+];

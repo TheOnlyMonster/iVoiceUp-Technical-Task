@@ -31,3 +31,16 @@ export const editEmployee = async (req: Request, res: Response, next: NextFuncti
     next(error);
   }
 };
+
+export const getEmployeeById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    const { id } = req.query;
+
+    const employee = await EmployeeService.getEmployeeById(id.toString());
+
+    res.status(200).json({ employee });
+
+  } catch (error) {
+    next(error);
+  }
+};
