@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 import * as dotenv from 'dotenv';
 dotenv.config({ path: './.env.dev' });
 

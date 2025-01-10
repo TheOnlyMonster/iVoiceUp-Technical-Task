@@ -2,11 +2,16 @@ import * as express from 'express';
 
 import { connectToDB } from './config/dbConnection';
 import { bodyParserConfig } from './middlewares/bodyParserConfig';
-
+import { errorHandler } from './middlewares/errorHandler';
+import authRoutes from './routes/authRoutes';
 
 const app = express();
 
 app.use(bodyParserConfig());
+
+app.use('/auth', authRoutes);
+
+app.use(errorHandler);
 
 const PORT: string | number = process.env.PORT || 5000;
 
