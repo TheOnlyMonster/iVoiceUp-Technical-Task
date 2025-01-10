@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 import { IEmployee } from "../interfaces/IEmployee";
 
 const EmployeeSchema: Schema = new Schema<IEmployee>({
@@ -35,6 +35,10 @@ const EmployeeSchema: Schema = new Schema<IEmployee>({
         `${props.value} is not a valid email address!`,
     },
   },
+  attendance: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Attendance',
+  }],
 });
 
 export const Employee = mongoose.model<IEmployee>("Employee", EmployeeSchema);

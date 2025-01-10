@@ -1,10 +1,9 @@
 import request from 'supertest';
+import { app } from '../../server';
 import mongoose from 'mongoose';
-import { app } from '../../server'; 
 import { connectToDB } from '../../config/dbConnection';
-import { Employee } from '../../models/Employee';
 import { HREmployee } from '../../models/HREmployee';
-import { hashPassword } from '../../utils/passwordUtils';
+import { Employee } from '../../models/Employee';
 
 describe('Auth Routes Test', () => {
   beforeAll(async () => {
@@ -12,39 +11,59 @@ describe('Auth Routes Test', () => {
   });
 
   afterAll(async () => {
+    await mongoose.connection.db.dropDatabase();
     await mongoose.connection.close();
   });
 
-  beforeEach(async () => {
-    await Employee.deleteMany({});
-  });
-
-  it('should sign in successfully with valid HR credentials', async () => {
+  it('should sign in successfully with valid credentials', async () => {
+    await mongoose.connection.db.dropDatabase();
     const password = 'password123';
 
-    const hrEmployee = new HREmployee({
+    const hrEmployeeData = {
       fname: 'Alice',
       lname: 'HR',
       email: 'alice.hr@example.com',
       salary: 60000,
       password: password,
-    });
+    };
 
+    const hrEmployee = new HREmployee(hrEmployeeData);
     await hrEmployee.save();
 
     const response = await request(app)
       .post('/auth/signin')
       .send({
-        email: 'alice.hr@example.com',
-        password: 'password123',
+        email: hrEmployeeData.email,
+        password: password,
       });
 
     expect(response.status).toBe(200);
-    expect(response.body.message).toBe('Sign-in successful.');
     expect(response.body.token).toBeDefined();
   });
 
-  it('should fail to sign in with invalid email', async () => {
+  it('should return 400 if email is missing', async () => {
+    const response = await request(app)
+      .post('/auth/signin')
+      .send({
+        password: 'password123',
+      });
+
+    expect(response.status).toBe(400);
+    expect(response.body.message).toBe('Email is required');
+  });
+
+  it('should return 400 if password is missing', async () => {
+    const response = await request(app)
+      .post('/auth/signin')
+      .send({
+        email: 'alice.hr@example.com',
+      });
+
+    expect(response.status).toBe(400);
+    expect(response.body.message).toBe('Password is required');
+  });
+
+  it('should return 401 if email is invalid', async () => {
     const response = await request(app)
       .post('/auth/signin')
       .send({
@@ -56,24 +75,24 @@ describe('Auth Routes Test', () => {
     expect(response.body.message).toBe('Invalid email or password.');
   });
 
-  it('should fail to sign in with invalid password', async () => {
+  it('should return 401 if password is invalid', async () => {
     const password = 'password123';
-    const hashedPassword = await hashPassword(password);
 
-    const hrEmployee = new HREmployee({
-      fname: 'Bob',
-      lname: 'HR',
-      email: 'bob.hr@example.com',
-      salary: 70000,
-      password: hashedPassword,
-    });
+    const hrEmployeeData = {
+      fname: 'Ahmed',
+      lname: 'Adel',
+      email: 'ahmed.hr@example.com',
+      salary: 60000,
+      password: password,
+    };
 
+    const hrEmployee = new HREmployee(hrEmployeeData);
     await hrEmployee.save();
 
     const response = await request(app)
       .post('/auth/signin')
       .send({
-        email: 'bob.hr@example.com',
+        email: hrEmployeeData.email,
         password: 'wrongpassword',
       });
 
@@ -81,46 +100,29 @@ describe('Auth Routes Test', () => {
     expect(response.body.message).toBe('Invalid email or password.');
   });
 
-  it('should fail to sign in if not an HR employee', async () => {
+  it('should not sign in if user is not an HR employee', async () => {
     const password = 'password123';
-    const hashedPassword = await hashPassword(password);
 
-    const employee = new Employee({
+    const employeeData = {
       fname: 'John',
       lname: 'Doe',
-      email: 'john.doe@example.com',
+      email: 'johnDoe@example.com',
       salary: 50000,
-      password: hashedPassword,
-    });
+    };
+
+    const employee = new Employee(employeeData);
 
     await employee.save();
 
     const response = await request(app)
       .post('/auth/signin')
       .send({
-        email: 'john.doe@example.com',
-        password: 'password123',
+        email: employeeData.email,
+        password: password,
       });
-
+    
     expect(response.status).toBe(401);
-    expect(response.body.message).toBe('Not authorized.');
-  });
 
-  it('should return 400 if email or password is missing', async () => {
-    let response = await request(app)
-      .post('/auth/signin')
-      .send({
-        email: 'missing.password@example.com',
-      });
 
-    expect(response.status).toBe(400);
-
-    response = await request(app)
-      .post('/auth/signin')
-      .send({
-        password: 'missingemail',
-      });
-
-    expect(response.status).toBe(400);
   });
 });

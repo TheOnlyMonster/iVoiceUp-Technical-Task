@@ -1,5 +1,4 @@
 import { body, query, ValidationChain } from 'express-validator';
-
 export const addEmployeeValidator: ValidationChain[] = [
   body('fname')
     .exists().withMessage('First name is required.')

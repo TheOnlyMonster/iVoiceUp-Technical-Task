@@ -57,4 +57,4 @@ export const viewEmployees = async (req: Request, res: Response, next: NextFunct
   } catch (error) {
     next(error);
   }
-}
+};

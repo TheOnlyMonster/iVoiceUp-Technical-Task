@@ -1,10 +1,8 @@
 import { Employee } from '../models/Employee';
 import { IEmployee } from '../interfaces/IEmployee';
 import { HREmployee } from '../models/HREmployee';
-import { EmployeeNotFoundError } from '../errors/EmployeeNotFounfError';
-import { UnauthorizedEditError } from '../errors/UnauthorizedEditError';
 import mongoose from 'mongoose';
-import { InvalidObjectIdError } from '../errors/InvalidObjectIdError';
+import { CustomError } from '../errors/CustomError';
 
 export class EmployeeService {
 
@@ -12,7 +10,7 @@ export class EmployeeService {
 
     const isEmailTaken = await Employee.exists({ email: employeeData.email });
     if (isEmailTaken) {
-      throw new Error('Email is already taken.');
+      throw new CustomError('Email already in use.', 400);
     }
 
     const employee = new Employee(employeeData);
@@ -27,7 +25,7 @@ export class EmployeeService {
     const existingEmp = await this.getEmployeeById(id);
   
     if (existingEmp instanceof HREmployee) {
-      throw new UnauthorizedEditError();
+      throw new CustomError('Cannot edit HR employee.', 400);
     }
   
     Object.keys(employeeData).forEach((key) => {
@@ -43,13 +41,13 @@ export class EmployeeService {
   static async getEmployeeById(id: string): Promise<IEmployee> {
 
     if (!mongoose.isValidObjectId(id)) {
-      throw new InvalidObjectIdError();
+      throw new CustomError('Invalid employee ID.', 400);
     }
   
     const employee = await Employee.findById(id);
   
     if (!employee) {
-      throw new EmployeeNotFoundError();
+      throw new CustomError('Employee not found.', 404);
     }
   
     return employee;
@@ -57,7 +55,7 @@ export class EmployeeService {
 
 
   static async viewEmployees(page = 1, limit = 10): Promise<IEmployee[]> {
-    const employees = await Employee.find()
+    const employees = await Employee.find({ __t: { $ne: 'HREmployee' } })
       .skip((page - 1) * limit)
       .limit(limit);
     return employees;
