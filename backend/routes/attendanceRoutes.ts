@@ -9,6 +9,6 @@ const router = Router();
 
 router.post('/add', AuthMiddleware, addAttendanceValidator, validateRequest, addAttendance);
 
-router.get('/get/:employeeId', AuthMiddleware, getAttendanceValidator, validateRequest, getAttendanceByEmployeeId);
+router.get('/get', AuthMiddleware, getAttendanceValidator, validateRequest, getAttendanceByEmployeeId);
 
 export default router;

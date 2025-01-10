@@ -1,7 +1,6 @@
 import mongoose from 'mongoose';
 import { Employee } from '../../models/Employee';
 import { HREmployee } from '../../models/HREmployee';
-import { hashPassword } from '../../utils/passwordUtils';
 import { connectToDB } from '../../config/dbConnection';
 describe('Employee Model Test', () => {
   beforeAll(async () => {

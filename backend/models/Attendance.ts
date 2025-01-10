@@ -16,8 +16,6 @@ const AttendanceSchema: Schema = new Schema<IAttendance>({
     enum: ["Present", "Absent"], default: "Absent",
     required: true,
   },
-}, { 
-  _id: false 
 });
 
 AttendanceSchema.index({ employeeId: 1, date: 1 }, { unique: true });

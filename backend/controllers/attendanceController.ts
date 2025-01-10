@@ -15,10 +15,9 @@ export const addAttendance = async (req: Request, res: Response, next: NextFunct
 
 export const getAttendanceByEmployeeId = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
-    const { employeeId } = req.params;
-    const { page = 1 } = req.query;
+    const { page = 1, employeeId } = req.query;
 
-    const attendance = await AttendanceService.getAttendanceByEmployeeId(employeeId, Number(page));
+    const attendance = await AttendanceService.getAttendanceByEmployeeId(employeeId.toString(), Number(page));
 
     res.status(200).json({ attendance });
   } catch (error) {
