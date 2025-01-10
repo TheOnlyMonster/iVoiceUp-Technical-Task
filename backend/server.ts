@@ -1,4 +1,4 @@
-import * as express from 'express';
+import express from 'express';
 
 import { connectToDB } from './config/dbConnection';
 import { bodyParserConfig } from './middlewares/bodyParserConfig';
@@ -22,3 +22,5 @@ app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
   connectToDB();
 });
+
+export { app };
