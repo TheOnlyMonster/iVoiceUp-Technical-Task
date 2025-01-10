@@ -4,12 +4,15 @@ import { connectToDB } from './config/dbConnection';
 import { bodyParserConfig } from './middlewares/bodyParserConfig';
 import { errorHandler } from './middlewares/errorHandler';
 import authRoutes from './routes/authRoutes';
+import employeeRoutes from './routes/employeeRoutes';
 
 const app = express();
 
 app.use(bodyParserConfig());
 
 app.use('/auth', authRoutes);
+
+app.use('/employee', employeeRoutes);
 
 app.use(errorHandler);
 

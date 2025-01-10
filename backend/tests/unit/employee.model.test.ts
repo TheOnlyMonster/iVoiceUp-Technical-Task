@@ -5,7 +5,9 @@ import { connectToDB } from '../../config/dbConnection';
 
 describe('Employee Model Test', () => {
 
-  beforeAll(connectToDB);
+  beforeAll(async () => {
+    await connectToDB();
+  });
 
   afterAll(async () => {
     await mongoose.connection.close();
@@ -13,22 +15,28 @@ describe('Employee Model Test', () => {
 
   it('should create a normal employee successfully without password', async () => {
     const employeeData = {
-      name: 'John Doe',
+      fname: 'John',
+      lname: 'Doe',
       email: 'john.doe@example.com',
+      salary: 50000,
     };
 
     const employee = new Employee(employeeData);
     const savedEmployee = await employee.save();
 
     expect(savedEmployee._id).toBeDefined();
-    expect(savedEmployee.name).toBe(employeeData.name);
+    expect(savedEmployee.fname).toBe(employeeData.fname);
+    expect(savedEmployee.lname).toBe(employeeData.lname);
     expect(savedEmployee.email).toBe(employeeData.email);
+    expect(savedEmployee.salary).toBe(employeeData.salary);
   });
 
   it('should create an HR employee successfully with password', async () => {
     const employeeData = {
-      name: 'Alice HR',
+      fname: 'Alice',
+      lname: 'HR',
       email: 'alice.hr@example.com',
+      salary: 60000,
       password: 'password123', 
     };
   
@@ -36,18 +44,21 @@ describe('Employee Model Test', () => {
     const savedEmployee = await hrEmployee.save();
   
     expect(savedEmployee._id).toBeDefined();
-    expect(savedEmployee.name).toBe(employeeData.name);
+    expect(savedEmployee.fname).toBe(employeeData.fname);
+    expect(savedEmployee.lname).toBe(employeeData.lname);
     expect(savedEmployee.email).toBe(employeeData.email);
+    expect(savedEmployee.salary).toBe(employeeData.salary);
     
     expect(savedEmployee.password).toBeDefined();
     expect(savedEmployee.password).not.toBe(employeeData.password); 
   });
-  
 
   it('should fail to create an employee with invalid email', async () => {
     const employeeData = {
-      name: 'Jane Doe',
+      fname: 'Jane',
+      lname: 'Doe',
       email: 'invalid-email',
+      salary: 55000,
       password: 'password123',
     };
 
@@ -66,8 +77,10 @@ describe('Employee Model Test', () => {
 
   it('should hash the password before saving for HR employee', async () => {
     const employeeData = {
-      name: 'Bob HR',
+      fname: 'Bob',
+      lname: 'HR',
       email: 'bob.hr@example.com',
+      salary: 70000,
       password: 'password123',
     };
 

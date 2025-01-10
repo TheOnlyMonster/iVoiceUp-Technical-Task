@@ -2,9 +2,26 @@ import mongoose, { Schema, Document } from "mongoose";
 import { IEmployee } from "../interfaces/IEmployee";
 
 const EmployeeSchema: Schema = new Schema<IEmployee>({
-  name: {
+  fname: {
     type: String,
     required: true,
+    trim: true,
+  },
+  lname: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  salary: {
+    type: Number,
+    required: true,
+    validate: {
+      validator: function (salary: number) {
+        return salary > 0;
+      },
+      message: (props: { value: number }) =>
+        `${props.value} is not a valid salary!`,
+    },
   },
   email: {
     type: String,

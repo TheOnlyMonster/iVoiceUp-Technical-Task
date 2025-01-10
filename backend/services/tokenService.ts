@@ -1,9 +1,13 @@
-import { sign, verify } from "jsonwebtoken";
+import { sign, verify, JwtPayload } from "jsonwebtoken";
 import jwtConfig from "../config/jwtConfig";
+
+interface AccessTokenPayload {
+  userId: string;
+}
 
 export class TokenService {
   static generateAccessToken(id: string): string {
-    const payload = {
+    const payload: AccessTokenPayload = {
       userId: id,
     };
 
@@ -12,11 +16,11 @@ export class TokenService {
     });
   }
 
-  static verifyAccessToken(token: string): any {
-    return verify(token, jwtConfig.ACCESS_TOKEN_SECRET);
+  static verifyAccessToken(token: string): AccessTokenPayload | JwtPayload {
+    return verify(token, jwtConfig.ACCESS_TOKEN_SECRET) as AccessTokenPayload | JwtPayload;
   }
 
-  static verifyRefreshToken(token: string): any {
-    return verify(token, jwtConfig.REFRESH_TOKEN_SECRET);
+  static verifyRefreshToken(token: string): JwtPayload {
+    return verify(token, jwtConfig.REFRESH_TOKEN_SECRET) as JwtPayload;
   }
 }
