@@ -3,15 +3,18 @@
 import { Box, Flex, HStack, Text } from "@chakra-ui/react";
 import * as React from "react";
 import NextLink from "next/link";
-import { getCookie } from "cookies-next";
+import { getCookie, deleteCookie } from "cookies-next";
+import { useRouter } from "next/navigation";
 
 const Links = ["About", "Contact"];
 const NavLink = ({
   children,
   href,
+  onClick,
 }: {
   children: React.ReactNode;
   href: string;
+  onClick?: () => void;
 }) => (
   <NextLink href={href} passHref>
     <Box
@@ -25,6 +28,7 @@ const NavLink = ({
       }}
       color="gray.300"
       fontWeight="medium"
+      onClick={onClick}
     >
       {children}
     </Box>
@@ -34,6 +38,7 @@ const NavLink = ({
 export default function NavBar() {
   const [loading, setLoading] = React.useState(true);
   const [token, setToken] = React.useState<string | undefined>("");
+  const router = useRouter();
 
   React.useEffect(() => {
     const retrievedToken = getCookie("token");
@@ -41,9 +46,16 @@ export default function NavBar() {
     setLoading(false);
   }, []);
 
+  const handleLogout = () => {
+    deleteCookie("token");
+    setToken(""); 
+    router.push("/login"); 
+  };
+
   return (
     <Box bg={"gray.800"} px={4} boxShadow="sm">
       <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
+        {/* Navigation Links */}
         <HStack as={"nav"} gap={6}>
           {Links.map((link) => (
             <NavLink key={link} href={`/${link.toLowerCase()}`}>
@@ -52,11 +64,14 @@ export default function NavBar() {
           ))}
         </HStack>
 
+        {/* Auth Links */}
         <Flex alignItems={"center"}>
           {!loading && (
             <>
               {token ? (
-                <NavLink href="/logout">Logout</NavLink>
+                <NavLink href="#" onClick={handleLogout}>
+                  Logout
+                </NavLink>
               ) : (
                 <NavLink href="/login">Sign In</NavLink>
               )}
