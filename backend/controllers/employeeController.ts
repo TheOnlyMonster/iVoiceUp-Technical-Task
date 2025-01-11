@@ -52,7 +52,11 @@ export const viewEmployees = async (req: Request, res: Response, next: NextFunct
 
     const employees = await EmployeeService.viewEmployees(Number(page));
 
-    res.status(200).json({ employees });
+    const totalEmployees = await EmployeeService.getEmployeesCount();
+
+    const totalPages = Math.ceil(totalEmployees / 10);
+
+    res.status(200).json({ employees, totalPages});
 
   } catch (error) {
     next(error);

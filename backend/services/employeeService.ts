@@ -4,6 +4,8 @@ import { HREmployee } from '../models/HREmployee';
 import mongoose from 'mongoose';
 import { CustomError } from '../errors/CustomError';
 
+const limit = 10;
+
 export class EmployeeService {
 
   static async addEmployee(employeeData: { fname: string; lname: string; email: string; salary: number }): Promise<IEmployee> {
@@ -54,10 +56,14 @@ export class EmployeeService {
   }
 
 
-  static async viewEmployees(page = 1, limit = 10): Promise<IEmployee[]> {
+  static async viewEmployees(page = 1): Promise<IEmployee[]> {
     const employees = await Employee.find({ __t: { $ne: 'HREmployee' } })
       .skip((page - 1) * limit)
       .limit(limit);
     return employees;
+  }
+
+  static async getEmployeesCount(): Promise<number> {
+    return await Employee.countDocuments({ __t: { $ne: 'HREmployee' } });
   }
 }

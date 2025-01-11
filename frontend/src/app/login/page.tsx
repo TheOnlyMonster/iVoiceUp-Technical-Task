@@ -7,6 +7,8 @@ import { login } from "../../services/authService";
 import { validateEmail, validatePassword } from "../../utils/validation";
 import { AxiosError } from "axios";
 import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
+
 
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -14,6 +16,7 @@ const LoginPage: React.FC = () => {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [backendError, setBackendError] = useState("");
+  const router = useRouter();
 
   const handleSubmit = async () => {
     const emailError = validateEmail(email);
@@ -28,6 +31,7 @@ const LoginPage: React.FC = () => {
         const response = await login(email, password);
         console.log("Login successful", response);
         Cookies.set("token", response.token);
+        router.push("/dashboard");
       } catch (error: unknown) {
         if (error instanceof AxiosError) {
           console.log("Login failed", error);
