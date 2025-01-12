@@ -25,8 +25,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     if (token) {
       setIsAuthenticated(true); 
     } else {
-      setIsAuthenticated(false); 
-      router.push('/login'); 
+      setIsAuthenticated(false);
     }
   }, [router]);
 

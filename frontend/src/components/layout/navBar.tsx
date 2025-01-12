@@ -6,6 +6,7 @@ import NextLink from "next/link";
 import { useAuth } from "@/AuthContext";
 
 const Links = ["About", "Contact"];
+
 const NavLink = ({
   children,
   href,
@@ -36,6 +37,13 @@ const NavLink = ({
 
 export default function NavBar() {
   const { isLoggedIn, signOut } = useAuth();
+  const [isLoading, setIsLoading] = React.useState(true);
+
+  React.useEffect(() => {
+
+      setIsLoading(false);
+      
+    }, [isLoggedIn]);
 
   return (
     <Box bg={"gray.800"} px={4} boxShadow="sm">
@@ -51,12 +59,14 @@ export default function NavBar() {
 
         {/* Auth Links */}
         <Flex alignItems={"center"}>
-          {isLoggedIn ? (
-            <NavLink href="#" onClick={signOut}>
-              Logout
-            </NavLink>
-          ) : (
-            <NavLink href="/login">Sign In</NavLink>
+          {!isLoading && (
+            isLoggedIn ? (
+              <NavLink href="#" onClick={signOut}>
+                Logout
+              </NavLink>
+            ) : (
+              <NavLink href="/login">Sign In</NavLink>
+            )
           )}
         </Flex>
       </Flex>
