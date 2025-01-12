@@ -1,13 +1,9 @@
 import axios from "axios";
 import { API_URL } from "../config";
-import { getCookie } from "cookies-next";
 
-export const getAllEmployees = async (page: number) => {
-  const token = getCookie("token");
+export const getAllEmployees = async (page: number, token: string | null) => {
 
-  if (!token) {
-    throw new Error("Authentication token not found.");
-  }
+
 
   const response = await axios.get(`${API_URL}/employee/view`, {
     params: { page },

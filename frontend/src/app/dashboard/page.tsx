@@ -13,9 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { Table, Thead, Tbody, Tr, Th, Td } from "@chakra-ui/table";
 import { getAllEmployees } from "@/services/employeeService";
-import { AxiosError } from "axios";
-import { deleteCookie } from "cookies-next";
-import { useRouter } from "next/navigation";
+import { useAuth } from "@/AuthContext";
 
 interface Employee {
   _id: string;
@@ -30,28 +28,31 @@ const DashboardPage: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [page, setPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1);
-  const router = useRouter();
+  const { isLoggedIn, signOut, getToken } = useAuth();
 
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
-        const { employees, totalPages } = await getAllEmployees(page);
+
+        if (!isLoggedIn && !getToken()) {
+          throw new Error("Unauthorized");
+        }
+
+        const { employees, totalPages } = await getAllEmployees(page, getToken());
         setEmployees(employees);
         setTotalPages(totalPages);
         setLoading(false);
-      } catch (error) {
-        console.error("Failed to fetch employees", error);
 
-        if (error instanceof AxiosError && error.status === 401) {
-          deleteCookie("token");
-          router.push("/login");
-        }
-        setLoading(false);
+      } catch (error) {
+
+        console.error("Failed to fetch employees", error);
+        signOut();
+
       }
     };
 
     fetchEmployees();
-  }, [page]);
+  }, [page, signOut, isLoggedIn, getToken]);
 
   const handlePageChange = (newPage: number) => {
     setLoading(true);

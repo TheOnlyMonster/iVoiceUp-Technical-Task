@@ -1,10 +1,9 @@
 "use client";
 
-import { Box, Flex, HStack, Text } from "@chakra-ui/react";
+import { Box, Flex, HStack } from "@chakra-ui/react";
 import * as React from "react";
 import NextLink from "next/link";
-import { getCookie, deleteCookie } from "cookies-next";
-import { useRouter } from "next/navigation";
+import { useAuth } from "@/AuthContext";
 
 const Links = ["About", "Contact"];
 const NavLink = ({
@@ -36,21 +35,7 @@ const NavLink = ({
 );
 
 export default function NavBar() {
-  const [loading, setLoading] = React.useState(true);
-  const [token, setToken] = React.useState<string | undefined>("");
-  const router = useRouter();
-
-  React.useEffect(() => {
-    const retrievedToken = getCookie("token");
-    setToken(retrievedToken as string);
-    setLoading(false);
-  }, []);
-
-  const handleLogout = () => {
-    deleteCookie("token");
-    setToken(""); 
-    router.push("/login"); 
-  };
+  const { isLoggedIn, signOut } = useAuth();
 
   return (
     <Box bg={"gray.800"} px={4} boxShadow="sm">
@@ -66,21 +51,12 @@ export default function NavBar() {
 
         {/* Auth Links */}
         <Flex alignItems={"center"}>
-          {!loading && (
-            <>
-              {token ? (
-                <NavLink href="#" onClick={handleLogout}>
-                  Logout
-                </NavLink>
-              ) : (
-                <NavLink href="/login">Sign In</NavLink>
-              )}
-            </>
-          )}
-          {loading && (
-            <Text color="gray.300" fontSize="sm">
-              Loading...
-            </Text>
+          {isLoggedIn ? (
+            <NavLink href="#" onClick={signOut}>
+              Logout
+            </NavLink>
+          ) : (
+            <NavLink href="/login">Sign In</NavLink>
           )}
         </Flex>
       </Flex>
