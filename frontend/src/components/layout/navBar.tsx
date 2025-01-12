@@ -61,9 +61,14 @@ export default function NavBar() {
         <Flex alignItems={"center"}>
           {!isLoading && (
             isLoggedIn ? (
+              <>
+              <NavLink href="/dashboard">
+                Dashboard
+              </NavLink>
               <NavLink href="#" onClick={signOut}>
                 Logout
               </NavLink>
+              </>
             ) : (
               <NavLink href="/login">Sign In</NavLink>
             )

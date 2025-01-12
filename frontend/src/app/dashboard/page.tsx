@@ -35,11 +35,14 @@ const DashboardPage: React.FC = () => {
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
+
         const token = getToken();
+        console.log(token);
         const { employees, totalPages } = await getAllEmployees(page, token);
         setEmployees(employees);
         setTotalPages(totalPages);
         setLoading(false);
+
       } catch (error) {
         console.error("Failed to fetch employees", error);
       }

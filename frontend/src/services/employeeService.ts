@@ -3,6 +3,8 @@ import { API_URL } from "../config";
 import Employee from "@/interfaces/Employee";
 
 export const getAllEmployees = async (page: number, token: string | null) => {
+
+  console.log(token);
   const response = await axios.get(`${API_URL}/employee/view`, {
     params: { page },
     headers: {
