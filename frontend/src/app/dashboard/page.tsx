@@ -15,7 +15,7 @@ import { Table, Thead, Tbody, Tr, Th, Td } from "@chakra-ui/table";
 import { getAllEmployees } from "@/services/employeeService";
 import NextLink from "next/link";
 import { useAuth } from "@/AuthContext";
-import Loading from "@/components/authentication/authLoading";
+import Loading from "@/components/authentication/authLoading"; 
 
 interface Employee {
   _id: string;
@@ -37,7 +37,6 @@ const DashboardPage: React.FC = () => {
       try {
 
         const token = getToken();
-        console.log(token);
         const { employees, totalPages } = await getAllEmployees(page, token);
         setEmployees(employees);
         setTotalPages(totalPages);
@@ -109,7 +108,7 @@ const DashboardPage: React.FC = () => {
                       <Td>{employee.lname}</Td>
                       <Td>{employee.email}</Td>
                       <Td>${employee.salary.toLocaleString()}</Td>
-                      <Td>
+                      <Td padding={5}>
                         <IconButton
                           aria-label="Edit Employee"
                           onClick={(e) => e.stopPropagation()}
@@ -117,7 +116,17 @@ const DashboardPage: React.FC = () => {
                           colorScheme="blue"
                           mr={2}
                         >
-                          <NextLink href={`/employee/${employee._id}`} passHref>
+                          <NextLink
+                            href={`/employee/${employee._id}`}
+                            style={{
+                              width: "100%",
+                              height: "100%",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                            }}
+                            passHref
+                          >
                             <Text fontSize="lg">✎</Text>
                           </NextLink>
                         </IconButton>

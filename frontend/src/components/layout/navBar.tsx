@@ -40,10 +40,8 @@ export default function NavBar() {
   const [isLoading, setIsLoading] = React.useState(true);
 
   React.useEffect(() => {
-
-      setIsLoading(false);
-      
-    }, [isLoggedIn]);
+    setIsLoading(false);
+  }, [isLoggedIn]);
 
   return (
     <Box bg={"gray.800"} px={4} boxShadow="sm">
@@ -59,20 +57,18 @@ export default function NavBar() {
 
         {/* Auth Links */}
         <Flex alignItems={"center"}>
-          {!isLoading && (
-            isLoggedIn ? (
+          {!isLoading &&
+            (isLoggedIn ? (
               <>
-              <NavLink href="/dashboard">
-                Dashboard
-              </NavLink>
-              <NavLink href="#" onClick={signOut}>
-                Logout
-              </NavLink>
+                <NavLink href="/employee/add">Add New Employee</NavLink>
+                <NavLink href="/dashboard">Dashboard</NavLink>
+                <NavLink href="#" onClick={signOut}>
+                  Logout
+                </NavLink>
               </>
             ) : (
               <NavLink href="/login">Sign In</NavLink>
-            )
-          )}
+            ))}
         </Flex>
       </Flex>
     </Box>
