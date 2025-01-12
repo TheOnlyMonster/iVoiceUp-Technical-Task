@@ -34,7 +34,12 @@ const EmployeeDetailsPage: React.FC = () => {
 
     try {
       const updatedEmployee = await updateEmployee(employee, getToken());
-      setEmployee(updatedEmployee);
+
+      // Update the employee ID
+      updatedEmployee.updatedEmployee.id = updatedEmployee.updatedEmployee._id;
+
+      setEmployee(updatedEmployee.updatedEmployee);
+
       setIsEditing(false);
     } catch (error) {
       console.error("Failed to update employee details", error);
