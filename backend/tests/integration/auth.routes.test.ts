@@ -22,7 +22,7 @@ describe('Auth Routes Test', () => {
     const hrEmployeeData = {
       fname: 'Alice',
       lname: 'HR',
-      email: 'alice.hr@example.com',
+      email: 'a.hr@example.com',
       salary: 60000,
       password: password,
     };
@@ -56,7 +56,7 @@ describe('Auth Routes Test', () => {
     const response = await request(app)
       .post('/auth/signin')
       .send({
-        email: 'alice.hr@example.com',
+        email: 'a.hr@example.com',
       });
 
     expect(response.status).toBe(400);

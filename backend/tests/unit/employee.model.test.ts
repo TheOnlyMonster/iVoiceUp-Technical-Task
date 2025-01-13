@@ -74,9 +74,9 @@ describe('Employee Model Test', () => {
     const password = 'password123';
 
     const hrEmployeeData = {
-      fname: 'Alice',
-      lname: 'HR',
-      email: 'alice.hr@example.com',
+      fname: 'Ahmed',
+      lname: 'Ali',
+      email: 'Ahmed.hr@example.com',
       salary: 60000,
       password: password,
     };

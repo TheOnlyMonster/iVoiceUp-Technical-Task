@@ -17,7 +17,7 @@ describe('Attendance Routes Test', () => {
     const hrEmployeeData = {
       fname: 'Alice',
       lname: 'HR',
-      email: 'alice.hr@example.com',
+      email: 'Ali.hr@example.com',
       salary: 60000,
       password: password,
     };
