@@ -130,14 +130,6 @@ const DashboardPage: React.FC = () => {
                             <Text fontSize="lg">✎</Text>
                           </NextLink>
                         </IconButton>
-                        <IconButton
-                          aria-label="Add Attendance"
-                          onClick={(e) => e.stopPropagation()}
-                          size="sm"
-                          colorScheme="green"
-                        >
-                          <Text fontSize="lg">✔</Text>
-                        </IconButton>
                       </Td>
                     </Tr>
                   ))}

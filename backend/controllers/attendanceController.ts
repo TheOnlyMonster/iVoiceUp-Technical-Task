@@ -19,7 +19,11 @@ export const getAttendanceByEmployeeId = async (req: Request, res: Response, nex
 
     const attendance = await AttendanceService.getAttendanceByEmployeeId(employeeId.toString(), Number(page));
 
-    res.status(200).json({ attendance });
+    const count = await AttendanceService.getCountByEmployeeId(employeeId.toString());
+
+    const totalPages = Math.ceil(count / 5);
+
+    res.status(200).json({ attendance, totalPages });
   } catch (error) {
     next(error);
   }

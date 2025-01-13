@@ -8,6 +8,7 @@ import { FormControl, FormLabel } from "@chakra-ui/form-control";
 import { useAuth } from "@/AuthContext";
 import Employee from "@/interfaces/Employee";
 import Loading from "@/components/authentication/authLoading";
+import AttendancePage from "./attendance";
 
 const EmployeeDetailsPage: React.FC = () => {
   const { id } = useParams();
@@ -35,7 +36,6 @@ const EmployeeDetailsPage: React.FC = () => {
     try {
       const updatedEmployee = await updateEmployee(employee, getToken());
 
-      // Update the employee ID
       updatedEmployee.updatedEmployee.id = updatedEmployee.updatedEmployee._id;
 
       setEmployee(updatedEmployee.updatedEmployee);
@@ -64,18 +64,22 @@ const EmployeeDetailsPage: React.FC = () => {
       <Loading>
         <Text>Loading...</Text>
       </Loading>
-    )
+    );
   }
 
   return (
     <Loading>
       <Flex
+        direction="row"
         justify="center"
         align="center"
-        minHeight="100vh"
-        bg="gray.50"
+        bg="white"
         p={6}
+        boxShadow="base"
+        color="black"
+        minHeight="100vh"
       >
+        {/* Employee Details Section */}
         <Box
           bg="white"
           p={8}
@@ -83,6 +87,7 @@ const EmployeeDetailsPage: React.FC = () => {
           borderRadius="md"
           width="full"
           maxW="600px"
+          mr={6} 
         >
           <Text fontSize="2xl" fontWeight="bold" mb={6} textAlign="center">
             Edit Employee Details
@@ -150,6 +155,18 @@ const EmployeeDetailsPage: React.FC = () => {
               )}
             </Flex>
           </Stack>
+        </Box>
+
+        {/* Attendance Section */}
+        <Box
+          bg="white"
+          p={8}
+          boxShadow="lg"
+          borderRadius="md"
+          width="full"
+          maxW="600px"
+        >
+          <AttendancePage />
         </Box>
       </Flex>
     </Loading>
