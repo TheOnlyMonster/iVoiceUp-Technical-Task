@@ -22,12 +22,14 @@
     PORT=5000
     ```
 
-3. **Start the server:**
+3. **Seed the database:**
+
+  ```sh
+  npm run seed
+  ```
+
+4. **Start the server:**
   ```sh
   npx nodemon
   ```
 
-### Additional Information
-
-- The server will run on the port specified in the `.env.dev` file (default is 5000).
-- Ensure MongoDB is running and accessible via the `MONGODB_URI` provided in the environment variables.
