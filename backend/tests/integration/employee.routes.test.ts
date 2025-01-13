@@ -33,9 +33,9 @@ describe('Employee Routes Test', () => {
 
   it('should add an employee successfully', async () => {
     const employeeData = {
-      fname: 'John',
-      lname: 'Doe',
-      email: 'john.doe@example.com',
+      fname: 'Ahmed',
+      lname: 'Adel',
+      email: 'Ahmed0123@example.com',
       salary: 50000,
     };
     const response = await request(app)
@@ -66,7 +66,7 @@ describe('Employee Routes Test', () => {
       salary: 60000,
     };
 
-    const employee = await Employee.findOne({ email: 'john.doe@example.com' });
+    const employee = await Employee.findOne({ email: 'Ahmed0123@example.com' });
 
     const response = await request(app)
       .put('/employee/edit')
@@ -93,9 +93,9 @@ describe('Employee Routes Test', () => {
 
   it('should get an employee by ID successfully', async () => {
     const employee = new Employee({
-      fname: 'John',
-      lname: 'Doe',
-      email: 'john.doe@example.com',
+      fname: 'Ali',
+      lname: 'Mohamed',
+      email: 'Ali.mo@example.com',
       salary: 50000,
     });
     await employee.save();

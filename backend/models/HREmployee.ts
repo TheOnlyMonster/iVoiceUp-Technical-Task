@@ -11,10 +11,11 @@ const HREmployeeSchema: Schema = new Schema<IHREmployee>({
 });
 
 HREmployeeSchema.pre<IHREmployee>("save", async function (next) {
-  if (this.isModified("password")) {
+  if (this.isModified("password") || this.isNew) {
     this.password = await hashPassword(this.password);
   }
   next();
 });
+
 
 export const HREmployee = Employee.discriminator<IHREmployee>("HREmployee", HREmployeeSchema);

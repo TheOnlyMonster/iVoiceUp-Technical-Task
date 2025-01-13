@@ -29,6 +29,12 @@ export class EmployeeService {
     if (existingEmp instanceof HREmployee) {
       throw new CustomError('Cannot edit HR employee.', 400);
     }
+
+    const isEmailTaken = await Employee.exists({ email: employeeData.email, _id: { $ne: id } });
+
+    if (isEmailTaken) {
+      throw new CustomError('Email already in use.', 400);
+    }
   
     Object.keys(employeeData).forEach((key) => {
       if (employeeData[key] !== undefined) {

@@ -14,9 +14,9 @@ describe('Employee Model Test', () => {
 
   it('should create and save an employee successfully', async () => {
     const employeeData = {
-      fname: 'John',
+      fname: 'Reda',
       lname: 'Doe',
-      email: 'john.doe@example.com',
+      email: 'Reda.doe@example.com',
       salary: 50000,
     };
 
@@ -52,9 +52,9 @@ describe('Employee Model Test', () => {
 
   it('should not create an employee with negative salary', async () => {
     const employeeData = {
-      fname: 'John',
-      lname: 'Doe',
-      email: 'john.doe@example.com',
+      fname: 'Saleem',
+      lname: 'Bakr',
+      email: 'Slemm@example.com',
       salary: -50000,
     };
 
